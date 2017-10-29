@@ -3,7 +3,7 @@ CFLAGS= -std=c++14 -pedantic -Wall -Wextra -Werror -g
 BIN=besonParser
 OBJNAME= main.o
 
-OBJ=$(addprefix src, $(OBJNAME))
+OBJ=$(addprefix src/, $(OBJNAME))
 
 all : besonParser
 
