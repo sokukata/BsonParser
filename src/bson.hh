@@ -6,41 +6,49 @@
 class BSON 
 {
 private:
+    std::vector<char> bson_vector;
+    std::vector<char>::iterator it;
     std::map<std::string, Node*> grammar_map;
     
-    std::pair<std::string, Node*> element(std::vector<char>::iterator *it);
-    std::vector<char> ename(std::vector<char>::iterator *it);
-    std::vector<char> cstring(std::vector<char>::iterator *it);
-    char subtype(std::vector<char>::iterator *it);
+    void element();
+    std::string ename(); //done
+    std::string cstring(); //done
+    char subtype(); //done
     
 
-    double elm_double(std::vector<char>::iterator *it); //\x01 
-    std::string string(std::vector<char>::iterator *it);
-    BSON embeled_document(std::vector<char>::iterator *it);
-    BSON array_document(std::vector<char>::iterator *it);
-    std::string binary(std::vector<char>::iterator *it);
+    double elm_double(); // done 
+    std::string elm_string(); //done
+    BSON embeled_document(); //done
+    BSON array_document(); //done 
+    std::pair<char, std::string> binary(); //done
     //\x06 -> null
-    std::string objectId(std::vector<char>::iterator *it);
-    bool elm_bool(std::vector<char>::iterator *it);
-    std::string datetime(std::vector<char>::iterator *it);
+    std::string objectId(); //done
+    bool elm_bool(); //done 
+    int32_t datetime(); //done
     // \x0A -> null
-    std::string regexp(std::vector<char>::iterator *it);
-    std::string dbPointer(std::vector<char>::iterator *it);
-    std::string javaScriptCode(std::vector<char>::iterator *it);
-    std::string symbol(std::vector<char>::iterator *it);
-    std::string code_w_s(std::vector<char>::iterator *it);
-    int elm_int32(std::vector<char>::iterator *it);
-    unsigned long timestamp(std::vector<char>::iterator *it);
-    long elm_int64(std::vector<char>::iterator *it);
+    std::pair<std::string, std::string> regexp(); //done 
+    std::string dbPointer(); //done
+    std::string javaScriptCode(); //done 
+    std::string symbol(); //done
+    std::pair<std::string, BSON> code_w_s(); //done 
+    int32_t elm_int32(); // done
+    uint64_t timestamp();// done
+    int64_t elm_int64();// done
     // \x13 -> decimal128 : lire spec
     // \xFF -> Min key
-    // \x7F -> Max keyy
-
+    // \x7F -> Max key
+    
+    char getItValue(); //get iterator value and increment iterator
+    std::string byteReader(uint32_t size);
 
 public:
 
-    BSON(std::vector<char> bson_vector);
+    BSON(std::vector<char>& bson_vector);
+    BSON(std::vector<char>& bson_vector, std::vector<char>::iterator& it);
+    void parse();
     void Dump();
+
+    std::vector<char>::iterator getIt();
     
     
     
