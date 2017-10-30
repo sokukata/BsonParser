@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "bson.hh"
 
 using namespace std;
 
@@ -29,4 +30,6 @@ int main(int argc, char * argv[])
         return 1;
 
     std::vector<char> bson_vector = bson_to_vector(argv[1]);
+    BSON *document = new BSON(bson_vector);
+    document->parse();
 }
