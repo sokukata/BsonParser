@@ -1,14 +1,19 @@
 #pragma once
 #include <vector>
 #include <map>
-#include "node.hh"
+#include <gmp.h>
+#include <decimal/decimal>
+#include "element.hh"
+
+class Element;
 
 class BSON 
 {
 private:
     std::vector<char> bson_vector;
     std::vector<char>::iterator it;
-    std::map<std::string, Node*> grammar_map;
+    std::map<std::string, Element*> grammar_map;
+    std::vector<std::string> key_index;
     
     void element();
     std::string ename(); //done
@@ -18,8 +23,8 @@ private:
 
     double elm_double(); // done 
     std::string elm_string(); //done
-    BSON embeled_document(); //done
-    BSON array_document(); //done 
+    BSON* embeled_document(); //done
+    BSON* array_document(); //done 
     std::pair<char, std::string> binary(); //done
     //\x06 -> null
     std::string objectId(); //done
@@ -27,13 +32,15 @@ private:
     int32_t datetime(); //done
     // \x0A -> null
     std::pair<std::string, std::string> regexp(); //done 
-    std::string dbPointer(); //done
+    std::pair<std::string, std::string> dbPointer(); //done
     std::string javaScriptCode(); //done 
     std::string symbol(); //done
-    std::pair<std::string, BSON> code_w_s(); //done 
+    std::pair<std::string, BSON*> code_w_s(); //done 
     int32_t elm_int32(); // done
     uint64_t timestamp();// done
     int64_t elm_int64();// done
+    std::decimal::decimal128 elm_decimal128(); //done
+    
     // \x13 -> decimal128 : lire spec
     // \xFF -> Min key
     // \x7F -> Max key

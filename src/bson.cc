@@ -40,92 +40,93 @@ void BSON::element()
 {
     char token = getItValue();
     std::string name = ename();
-    Node *elm;
+    Element *elm;
 
     switch(token)
     {
         case '\x01':
-            elm = new Node();
+            elm = new ElmDouble(elm_double());
             break;
         case '\x02':
-            elm = new Node();
+            elm = new ElmString(elm_string());
             break;
         case '\x03':
-            elm = new Node();
+            elm = new ElmEmbeddedDoc(embeled_document());
             break;
         case '\x04':
-            elm = new Node();
+            elm = new ElmArray(array_document());
             break;
         case '\x05':
-            elm = new Node();
+            elm = new ElmBinary(binary());
             break;
         case '\x06':
-            elm = new Node();
+            elm = new Element();
             break;
         case '\x07':
-            elm = new Node();
+            elm = new ElmObjectId(objectId());
             break;
         case '\x08':
-            elm = new Node();
+            elm = new ElmBoolean(elm_bool());
             break;
         case '\x09':
-            elm = new Node();
+            elm = new ElmDatetime(datetime());
             break;
         case '\x0A':
-            elm = new Node();
+            elm = new Element();
             break;
         case '\x0B':
-            elm = new Node();
+            elm = new ElmRegExp(regexp());
             break;
         case '\x0C':
-            elm = new Node();
+            elm = new ElmDbPointer(dbPointer());
             break;
         case '\x0D':
-            elm = new Node();
+            elm = new ElmJavaScript(javaScriptCode());
             break;
         case '\x0E':
-            elm = new Node();
+            elm = new ElmSymbol(symbol());
             break;
         case '\x0F':
-            elm = new Node();
+            elm = new ElmCodeWS(code_w_s());
             break;
         case '\x10':
-            elm = new Node();
+            elm = new ElmInt32(elm_int32());
             break;
         case '\x11':
-            elm = new Node();
+            elm = new ElmUInt64(timestamp());
             break;
         case '\x12':
-            elm = new Node();
+            elm = new ElmInt32(elm_int64());
             break;
         case '\x13':
-            elm = new Node();
+            elm = new Element();
             break;
         case '\xFF':
-            elm = new Node();
+            elm = new ElmMinKey();
             break;
         case '\x7F':
-            elm = new Node();
+            elm = new ElmMaxKey();
             break;
         default:
             break;
     }
     grammar_map.insert({name, elm});
+    key_index.push_back(name);
 }
 
-BSON BSON::embeled_document()
+BSON* BSON::embeled_document()
 {
-    BSON res =  BSON(bson_vector, it);
-    res.parse();
+    BSON* res =  new BSON(bson_vector, it);
+    res->parse();
     
     return res;
 }
 
 
-BSON BSON::array_document()
+BSON* BSON::array_document()
 {
-    BSON res =  BSON(bson_vector, it);
-    res.parse();
+    BSON* res =  new BSON(bson_vector, it);
+    res->parse();
 
     return res;
 }
@@ -155,13 +156,12 @@ std::pair<std::string, std::string> BSON::regexp()
 }
 
 
-std::string BSON::dbPointer()
+std::pair<std::string, std::string> BSON::dbPointer()
 {
-    std::string res;
-    res = elm_string();
-    res += byteReader(12);
+    std::string s1 = elm_string();
+    std::string s2 = byteReader(12);
 
-    return res;
+    return make_pair(s1, s2);
 }
 
 std::string BSON::javaScriptCode()
@@ -197,8 +197,6 @@ std::string BSON::ename()
 std::string BSON::elm_string()
 {
     std::string res = "";
-    /*int size = getItValue() | getItValue() << 8 | getItValue() << 16 |
-        getItValue() << 24;*/
     int size = elm_int32();
     for(int i = size; i > 1; i--)
         res.push_back(getItValue());
@@ -237,13 +235,13 @@ char BSON::subtype()
     return getItValue();
 }
 
-std::pair<std::string, BSON> BSON::code_w_s()
+std::pair<std::string, BSON*> BSON::code_w_s()
 {
     int size = elm_int32();
     std::string code = elm_string();
     
-    BSON scope =  BSON(bson_vector, it);
-    scope.parse();
+    BSON* scope =  new BSON(bson_vector, it);
+    scope->parse();
 
     return std::make_pair(code, scope);
 }
@@ -254,9 +252,7 @@ int32_t BSON::elm_int32()
     char array[4];
     
     for (char &i : array)
-    {
         i = getItValue();
-    }
 
     return *((int *) &array[0]);
 }
@@ -268,9 +264,7 @@ int64_t BSON::elm_int64()
     char array[8];
     
     for (char &i : array)
-    {
         i = getItValue();
-    }
 
     return *((int64_t *) &array[0]);   
 }
@@ -281,16 +275,22 @@ uint64_t BSON::timestamp()
     char array[8];
     
     for (char &i : array)
-    {
         i = getItValue();
-    }
 
     return *((uint64_t *) &array[0]);   
 }
 
 
+std::decimal::decimal128 BSON::elm_decimal128()
+{
+    std::decimal::decimal128 res = std::decimal::decimal128();
+    char array[16];
 
+    for (char &i : array)
+        i = getItValue();
 
+    return *((std::decimal::decimal128 *) &array[0]);
+}
 
 void BSON::parse()
 {
