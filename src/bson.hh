@@ -3,7 +3,9 @@
 #include <map>
 #include <gmp.h>
 #include <decimal/decimal>
+#include <iostream>
 #include "element.hh"
+
 
 class Element;
 
