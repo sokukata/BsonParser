@@ -1,6 +1,8 @@
 #include <assert.h>
+#include <iostream>
 #include "bson.hh"
 
+std::vector<char>::iterator BSON::it;
 
 BSON::BSON(std::vector<char>& bson_vector)
 {
@@ -11,7 +13,7 @@ BSON::BSON(std::vector<char>& bson_vector)
 BSON::BSON(std::vector<char>& bson_vector, std::vector<char>::iterator& it)
 {
     this->bson_vector = bson_vector;
-    this->it = it;    
+    this->it = it;
 }
 
 char BSON::getItValue()
@@ -149,6 +151,7 @@ BSON* BSON::array_document()
     std::cout << "array" << std::endl;
     BSON* res =  new BSON(bson_vector, it);
     res->parse();
+    std::cout << "array END" << std::endl;
     return res;
 }
 
@@ -219,7 +222,9 @@ double BSON::elm_double()
 std::string BSON::ename()
 {
     std::cout << "e_name" << std::endl; 
-    return cstring();
+    std::string s = cstring();
+    std::cout << s << std::endl;
+    return s;
 }
 
 std::string BSON::elm_string()
@@ -335,7 +340,11 @@ void BSON::parse()
     std::cout << "Elist" << std::endl;
 
     while(*it != '\x00')
+    {
+        std::cout << "it value : " <<std::hex << (int)*it << std::endl; 
         element();
+    }
+    assert(getItValue() == '\x00');
 }
 
 

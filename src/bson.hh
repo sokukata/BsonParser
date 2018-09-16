@@ -13,7 +13,7 @@ class BSON
 {
 private:
     std::vector<char> bson_vector;
-    std::vector<char>::iterator it;
+    static std::vector<char>::iterator it;
     std::map<std::string, Element*> grammar_map;
     std::vector<std::string> key_index;
     
@@ -58,8 +58,5 @@ public:
     void Dump();
 
     std::vector<char>::iterator getIt();
-    
-    
-    
-
 };
+
