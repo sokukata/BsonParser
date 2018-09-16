@@ -4,6 +4,7 @@
 #include <gmp.h>
 #include <decimal/decimal>
 #include <iostream>
+#include <iomanip>
 #include "element.hh"
 
 
@@ -51,11 +52,13 @@ private:
     std::string byteReader(uint32_t size);
 
 public:
+    static int level;
 
     BSON(std::vector<char>& bson_vector);
     BSON(std::vector<char>& bson_vector, std::vector<char>::iterator& it);
     void parse();
     void Dump();
+    
 
     std::vector<char>::iterator getIt();
 };

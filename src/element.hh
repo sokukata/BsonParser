@@ -54,7 +54,9 @@ public:
     ElmDouble(double d)
         : Element(DOUBLE),
         d(d)
-    {}
+    {
+        std::cout << d << std::endl;
+    }
 
     double GetD();
 
@@ -69,7 +71,9 @@ public:
     ElmString(std::string s)
         : Element(STRING),
         s(s)
-    {};
+    {
+        std::cout << '"' << s << '"' <<std::endl;
+    };
 
     std::string GetS();
 };
@@ -157,7 +161,9 @@ public:
     ElmObjectId(std::string s)
         : Element(OBJECT_ID),
         data(s)
-    {}
+    {
+        std::cout << '"' << s << '"' << std::endl;
+    }
 
     std::string GetData();
 };
@@ -171,7 +177,9 @@ public:
     ElmBoolean(bool b)
         : Element(BOOLEAN),
         b(b)
-    {}
+    {
+        std::cout << b << std::endl;
+    }
 
     bool GetBoolean();
 };
@@ -185,7 +193,9 @@ public:
     ElmDatetime(int32_t date)
         : Element(DATETIME),
         date(date)
-    {}
+    {
+        std::cout << date << std::endl;
+    }
 
     int32_t GetDate();
 };
@@ -201,7 +211,9 @@ public:
         : Element(REG_EXP),
         expr(regExp.first),
         opt(regExp.second)
-    {}
+    {
+        std::cout << "Pattern: \"" << regExp.first << "\"; Options: \"" << regExp.second << '"' << std::endl;
+    }
 
     std::string GetExpr();
     std::string GetOpt();
@@ -218,7 +230,9 @@ public:
         : Element(DBPOINTER),
         s1(dbPointer.first),
         s2(dbPointer.second)
-    {}
+    {
+        std::cout << "String: \"" << dbPointer.first << "\"; Id: \"" << dbPointer.second << '"' << std::endl;
+    }
 
     std::string GetS1();
     std::string GetS2();
@@ -233,7 +247,9 @@ public:
     ElmJavaScript(std::string code)
         : Element(JAVA_SCRIPT),
         code(code)
-    {}
+    {
+        std::cout << '"' << code << '"' << std::endl;
+    }
 
     std::string GetCode();
 };
@@ -247,7 +263,9 @@ public:
     ElmSymbol(std::string symb)
         : Element(SYMBOL),
         symb(symb)
-    {}
+    {
+        std::cout << '"' << symb << '"' << std::endl;
+    }
 
     std::string GetSymb();
 };
@@ -278,7 +296,9 @@ public:
     ElmInt32(int32_t i)
         : Element(INT32),
         i(i)
-    {}
+    {
+        std::cout << i << std::endl;
+    }
 
     int32_t GetI();
 };
@@ -292,7 +312,9 @@ public:
     ElmUInt64(uint64_t ui)
         : Element(UINT64),
         ui(ui)
-    {}
+    {
+         std::cout << ui << std::endl;   
+    }
 
     uint32_t GetUi();
 };
@@ -306,7 +328,9 @@ public:
     ElmInt64(int64_t i)
         : Element(INT64),
         i(i)
-    {}
+    {
+         std::cout << i << std::endl;   
+    }
 
     int64_t GetI();
 };
@@ -320,7 +344,9 @@ public:
     ElmDecimal128(std::decimal::decimal128 dn)
         : Element(DECIMAL128),
         dn(dn)
-    {}
+    {
+//         std::cout << dn << std::endl;       
+    }
 
     std::decimal::decimal128 GetDn();
 };

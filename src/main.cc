@@ -31,5 +31,9 @@ int main(int argc, char * argv[])
 
     std::vector<char> bson_vector = bson_to_vector(argv[1]);
     BSON *document = new BSON(bson_vector);
+    std::cout << "{" << std::endl;
+    BSON::level++;
     document->parse();
+    BSON::level--;
+    std::cout << "}" << std::endl;
 }
