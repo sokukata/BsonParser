@@ -339,13 +339,14 @@ class ElmDecimal128 : public Element
 {
 private:
     std::decimal::decimal128 dn;
+    std::string ToString(std::decimal::decimal128 dn);
 
 public:
     ElmDecimal128(std::decimal::decimal128 dn)
         : Element(DECIMAL128),
         dn(dn)
     {
-//         std::cout << dn << std::endl;       
+         std::cout << ToString(dn) << std::endl;       
     }
 
     std::decimal::decimal128 GetDn();
