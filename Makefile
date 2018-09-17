@@ -1,13 +1,13 @@
 CC=g++
 CFLAGS= -std=c++14 -pedantic -Wall -Wextra -Werror -g
-BIN=besonParser
+BIN=bsonParser
 OBJNAME= main.o bson.o element.o
 
 OBJ=$(addprefix src/, $(OBJNAME))
 
-all : besonParser
+all : bsonParser
 
-besonParser: $(OBJ)
+bsonParser: $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
