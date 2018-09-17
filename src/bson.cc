@@ -69,7 +69,8 @@ void BSON::element()
             break;
         case '\x06':
             //std::cout << "06" << std::endl;
-            elm = new Element();
+            std::cout << std::endl;
+            //elm = new Element();
             break;
         case '\x07':
             //std::cout << "07" << std::endl;
@@ -121,7 +122,7 @@ void BSON::element()
             break;
         case '\x13':
             //std::cout << "13" << std::endl;
-            elm = new Element();
+            elm = new ElmDecimal128(elm_decimal128());
             break;
         case '\xFF':
             //std::cout << "FF" << std::endl;

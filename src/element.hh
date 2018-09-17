@@ -1,4 +1,5 @@
 #pragma once
+#include <string.h>
 #include "bson.hh"
 
 class BSON;
@@ -35,7 +36,9 @@ protected:
 public:
     Element()
         : type(ENULL)
-    {}
+    {
+        std::cout << "null" << std::endl;
+    }
 
     Element(enum Type type)
         : type(type)
@@ -162,7 +165,26 @@ public:
         : Element(OBJECT_ID),
         data(s)
     {
-        std::cout << '"' << s << '"' << std::endl;
+        unsigned char buffer[s.length()];
+        unsigned int time = 0;
+        unsigned long machine = 0UL;
+        unsigned int inc = 0;
+
+        memcpy(buffer, s.data(), s.length());
+
+        time = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);
+       
+        machine = ((unsigned long)buffer[4] << 32) | ((unsigned long)buffer[5] << 24) 
+            | ((unsigned long)buffer[6] << 16) | ((unsigned long)buffer[7] << 8)
+            | ((unsigned long)buffer[8]); 
+        
+        inc =  (buffer[9] << 16) | (buffer[10] << 8) | (buffer[11]);
+        
+        std::cout << "{ ";
+        std::cout << "\"Time\": " << time;
+        std::cout << ", \"Machine\": " << machine;
+        std::cout << ", \"Inc\": " << inc;
+        std::cout << " }" << std::endl;
     }
 
     std::string GetData();
@@ -231,7 +253,26 @@ public:
         s1(dbPointer.first),
         s2(dbPointer.second)
     {
-        std::cout << "String: \"" << dbPointer.first << "\"; Id: \"" << dbPointer.second << '"' << std::endl;
+        unsigned char buffer[dbPointer.second.length()];
+        unsigned int time = 0;
+        unsigned long machine = 0UL;
+        unsigned int inc = 0;
+
+        memcpy(buffer, dbPointer.second.data(), dbPointer.second.length());
+
+        time = (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]);
+       
+        machine = ((unsigned long)buffer[4] << 32) | ((unsigned long)buffer[5] << 24) 
+            | ((unsigned long)buffer[6] << 16) | ((unsigned long)buffer[7] << 8)
+            | ((unsigned long)buffer[8]); 
+        
+        inc =  (buffer[9] << 16) | (buffer[10] << 8) | (buffer[11]);
+
+        std::cout << "{ \"String\": \"" << dbPointer.first << "\", \"Id\": { ";
+        std::cout << "\"Time\": " << time;
+        std::cout << ", \"Machine\": " << machine;
+        std::cout << ", \"Inc\": " << inc;
+        std::cout << " } }" << std::endl;
     }
 
     std::string GetS1();
@@ -359,7 +400,9 @@ private:
 public:
     ElmMinKey()
         : Element(MIN_KEY)
-    {}
+    {
+        std::cout << std::endl;
+    }
 };
 
 class ElmMaxKey : public Element
@@ -369,5 +412,7 @@ private:
 public:
     ElmMaxKey()
         : Element(MAX_KEY)
-    {}
+    {
+        std::cout << std::endl;
+    }
 };

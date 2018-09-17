@@ -116,7 +116,7 @@ std::decimal::decimal128 ElmDecimal128::GetDn()
     return dn;
 }
 
-std::string ToString(std::decimal::decimal128 dn)
+std::string ElmDecimal128::ToString(std::decimal::decimal128 dn)
 {
     long double d(std::decimal::decimal128_to_double(dn));
     std::ostringstream oss;
