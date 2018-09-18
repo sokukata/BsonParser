@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <map>
-#include <gmp.h>
 #include <decimal/decimal>
 #include <iostream>
 #include <iomanip>
@@ -44,7 +43,6 @@ private:
     int64_t elm_int64();// done
     std::decimal::decimal128 elm_decimal128(); //done
     
-    // \x13 -> decimal128 : lire spec
     // \xFF -> Min key
     // \x7F -> Max key
     
